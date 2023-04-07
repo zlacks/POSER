@@ -3,4 +3,3 @@ bin/
 user/bin/
 user/obj/
 errlog.txt
-compile_flags.txt

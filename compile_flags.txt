@@ -1,0 +1,11 @@
+-Wall
+-Wextra
+-pedantic
+-std=c90 
+-g
+-mcpu=cortex-a8 
+-ffreestanding
+-nostdlib
+-fPIE
+-Iinclude
+-Iarch/arm-realview-qemu/include
