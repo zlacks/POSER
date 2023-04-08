@@ -1,5 +1,5 @@
 #include <types.h>
-#include <uart.h>
+#include <memlayout.h>
 
 /* Optimize by telling compiler we will never return from this function */
 void init() __attribute__((noreturn));
@@ -7,7 +7,7 @@ void init() __attribute__((noreturn));
 /* Print string to UART */
 void printk(char *s){
   for(; *s != '\0'; s++){
-    REG(UART0) = *s;  
+    REG(UART0_BASE) = *s;  
   }
 }
 

@@ -1,15 +1,15 @@
-.global _start
-
 /* Interrupt vector table.
  * GNU assembler uses _start keyword to place this as first executable line,
  * jumping straight to reset handler */
-_start:
-	b reset
+.section .vector_table, "x"
+.global _Reset
+_Reset:
+	b reset_handler
 	b undef_handler
 	b svc_handler
-	b .
-	b .
-	b .
+	b . /* Prefetch Abort */
+	b . /* Data Abort */
+	b . /* Reserved */
 	b irq_handler
 
 /* fiq_hander must immediately follow interrupt vector table. Saves one jump */
@@ -18,27 +18,28 @@ fiq_handler:
 
 /* reset handler. On boot, these are the first kernel instructions executed.
  * May end up here if system borks real bad */
-reset:
-	/* Give IRQ mode 1KB stack */
-	msr cpsr_c, #0xC2		/* IRQ MODE | IRQ OFF | FIQ ON | ASYNC OFF */
-	ldr r0, = stack_top	
+.section .text
+reset_handler:
+	/* Set FIQ stack */
+	msr cpsr_c, #0xD1		/* FIQ MODE | IRQ OFF | FIQ OFF */
+	ldr r0, =_fiq_stack_top	
 	mov sp, r0
-	sub r0, r0, #0x400
-
-	/* Give SYS mode 1KB stack */
-	msr cpsr_c, #0xCF		/* SYS MODE | IRQ OFF | FIQ ON | ASYNC OFF */
+	
+	/* Set IRQ stack */
+	msr cpsr_c, #0xD2		/* IRQ MODE | IRQ OFF | FIQ OFF */
+	ldr r0, =_irq_stack_top	
 	mov sp, r0
-	sub r0, r0, #0x400
 
-	/* Give SVC mode rest of stack space */
-	msr cpsr_c, #0xC3		/* SVC MODE | IRQ OFF | FIQ ON | ASYNC OFF */
+	/* Set SVC stack */
+	msr cpsr_c, #0xD3		/* SVC MODE | IRQ OFF | FIQ OFF */
+	ldr r0, =_svc_stack_top
 	mov sp, r0
 
 	/* Set location of interrupt vector table in coprocessor 15 */
-	ldr r0, =_start
+	ldr r0, =_Reset
 	mcr p15, #0, r0, c12, c0, #0 	/* c12 = Vector Base Address Register (VBAR)*/ 
 
-	/* Enable Async abort by clearing bit 0b10000000 */
+	/* Enable interrupts by clearing 8th bit */
 	mrs r1, CPSR			/* Load CPSR register values */
 	bic r1, #0x80			/* Clear 8th bit */
 	msr cpsr_c, r1			/* Set CPSR */

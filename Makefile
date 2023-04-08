@@ -70,8 +70,8 @@ BL = ./tools/blob.sh
 CPU    ?= cortex-a8
 DEF    ?= NONE
 AFLAGS  = -mcpu=cortex-a8 -g
-CFLAGS  = -Wall -Wextra -Winline -pedantic -std=gnu90 -g -fPIE -mfloat-abi=hard \
-		  -mcpu=$(CPU) -ffreestanding -fno-omit-frame-pointer -D $(DEF)
+CFLAGS  = -Wall -Wextra -Winline -pedantic -std=c99 -g -fPIE -mfloat-abi=hard \
+		  -mcpu=$(CPU) -nostartfiles -ffreestanding -fno-omit-frame-pointer -D $(DEF)
 LDFLAGS = -nostdlib
 LIBS    = -lgcc 
 

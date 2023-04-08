@@ -1,7 +1,7 @@
 -Wall
 -Wextra
 -pedantic
--std=c90 
+-std=c99 
 -g
 -mcpu=cortex-a8 
 -ffreestanding
