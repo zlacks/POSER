@@ -70,7 +70,7 @@ BL = ./tools/blob.sh
 CPU    ?= cortex-a8
 DEF    ?= NONE
 AFLAGS  = -mcpu=cortex-a8 -g
-CFLAGS  = -Wall -Wextra -pedantic -std=gnu90 -g -fPIE -mfloat-abi=hard \
+CFLAGS  = -Wall -Wextra -Winline -pedantic -std=gnu90 -g -fPIE -mfloat-abi=hard \
 		  -mcpu=$(CPU) -ffreestanding -fno-omit-frame-pointer -D $(DEF)
 LDFLAGS = -nostdlib
 LIBS    = -lgcc 
@@ -180,7 +180,7 @@ qemu-gdb: $(KERNEL-ELF)
 
 # Dump kernel assembly code
 dump: $(KERNEL-ELF)
-	$(TOOLCHAIN)objdump -S --visualize-jumps=color --disassembler-color=color $(KERNEL-ELF)
+	@$(TOOLCHAIN)objdump -S --visualize-jumps=color -w $(KERNEL-ELF)
 
 # Show layout of kernel segments and symbols
 layout: $(KERNEL-ELF)
