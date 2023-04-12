@@ -4,7 +4,7 @@
 static uart_registers* uart0 = (uart_registers*)UART0_BASE;
 void (*uart_callback)(char);
 
-uart_error uart_init(uart_config* config, void (*callback)(char)){
+uart_error uart_configure(uart_config* config){
   if (config->data_bits < 5u || config->data_bits > 8u)
     return UART_INVALID_ARGUMENT_WORDSIZE;
   
@@ -64,11 +64,6 @@ uart_error uart_init(uart_config* config, void (*callback)(char)){
 
   /* Enable UART */
   uart0->CR |= CR_UARTEN;
-
-  /* Set IRQ handler */
-  uart_callback = callback;
-
-  /* TODO: Set uart_isr */
 
   return UART_OK;
 }

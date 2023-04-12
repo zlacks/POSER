@@ -54,7 +54,7 @@ typedef enum {
 } uart_error;
 
 /* Initialize UART0 */
-uart_error uart_init(uart_config* config, void (*irq_handler)(char));
+uart_error uart_configure(uart_config* config);
 
 /* Transmit a single byte */
 void uart_putchar(char c);

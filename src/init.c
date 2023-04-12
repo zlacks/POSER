@@ -17,7 +17,7 @@ void init(){
     .parity    = 0,
     .baudrate  = 9600
   };
-  uart_init(&uc, uart_lower);
+  uart_configure(&uc);
 
   uart_putchar('D');  
   uart_putchar('T');  
