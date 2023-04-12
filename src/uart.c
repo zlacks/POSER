@@ -70,13 +70,31 @@ uart_error uart_configure(uart_config* config){
 
 /* Transmit a single character over UART */
 void uart_putchar(char c){
-  /* Wait until TX is free */
+  /* Wait until TX FIFO is not full */
   while (uart0->FR & FR_TXFF);
 
   /* Put the characting into the data register */
   uart0->DR = c;
 }
 
-void uart_write(const char* data) {
+void uart_write(const char* data){
   while (*data) uart_putchar(*data++);
+}
+
+uart_error uart_getchar(char* c){
+  /* Error if there is no data to be recieved */
+  if (uart0->FR & FR_RXFE)
+    return UART_NO_DATA;
+
+  /* Put byte into given buffer */
+  *c = uart0->DR & DR_DATA_MASK;
+
+  /* Error if something is wrong with the character */
+  if (uart0->RSRECR & RSRECR_ERR_MASK) {
+    /* Reset error flags */
+    uart0->RSRECR &= RSRECR_ERR_MASK;
+    return UART_RECEIVE_ERROR;
+  }
+
+  return UART_OK;
 }

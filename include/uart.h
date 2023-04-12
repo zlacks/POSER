@@ -62,4 +62,7 @@ void uart_putchar(char c);
 /* Transmit a '\0' terminated array of bytes */
 void uart_write(const char* data) ;
 
+/* Recieve a single byte */
+uart_error uart_getchar(char* c);
+
 #endif /* UART_H */
