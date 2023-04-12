@@ -70,10 +70,10 @@ BL = ./tools/blob.sh
 CPU    ?= cortex-a8
 DEF    ?= NONE
 AFLAGS  = -mcpu=cortex-a8 -g
-CFLAGS  = -Wall -Wextra -Winline -pedantic -std=c99 -g -fPIE -mfloat-abi=hard \
+CFLAGS  = -Wall -Wextra -Winline -pedantic -std=c99 -g -fPIE -mfloat-abi=soft \
 		  -mcpu=$(CPU) -nostartfiles -ffreestanding -fno-omit-frame-pointer -D $(DEF)
-LDFLAGS = -nostdlib
-LIBS    = -lgcc 
+LDFLAGS = -nostdlib -ffreestanding
+LIBS    = -lgcc
 
 # -----------------------------------------------------------------------------
 # QEMU
@@ -83,7 +83,7 @@ QEMUOPTS = -m 512M \
 			-M realview-pb-a8 \
 			-cpu cortex-a8 \
 			-nographic
-GDBPORT ?= 30432
+GDBPORT ?= 30486
 
 # -----------------------------------------------------------------------------
 # TARGETS
