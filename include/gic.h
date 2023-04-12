@@ -2,7 +2,6 @@
 #define GIC_H 
 
 #include <stdint.h>
-#include <types.h>
 
 /* from umanovskis/baremetal-arm */
 /* Generic Interrupt Controller (GIC) Distributor registers */

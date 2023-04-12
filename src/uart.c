@@ -1,4 +1,4 @@
-#include <memlayout.h>
+#include <hardware.h>
 #include <uart.h>
 
 static uart_registers* uart0 = (uart_registers*)UART0_BASE;
